@@ -28,6 +28,5 @@ Jarvis: noel, c'est le dimanche 25 décembre 2016
 C'est dans 37 jour
 
 ```
-
 ## Author
 [Jean-Bernard Hallez](https://github.com/Jean-Bernard-Hallez/jarvis-cestquand)
