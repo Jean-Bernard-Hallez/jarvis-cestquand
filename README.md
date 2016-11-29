@@ -10,21 +10,21 @@ For multi-language plugin:
 - optionally write the Description / Usage sections in several languages
 -->
 ## Description
-Annonce combien de jour il reste avant un évenement enregistré dans le config.sh de jarvis.
-Pour les différents anniversaire ... date importante comme Noël...
+Annonce combien de jour il reste avant un Ã©venement enregistrÃ© dans le config.sh de jarvis.
+Pour les diffÃ©rents anniversaire ... date importante comme NoÃ«l...
 
 ## Usage
 ```
-You: C'est quand l'anniversaire de léa
+You: C'est quand l'anniversaire de lÃ©a
 Jarvis:  C'est le 10 novembre 1981
-léa fêtes ses 35 ans dans 17 jours
+lÃ©a fÃªtes ses 35 ans dans 17 jours
 
-jibé: c'est quand l'anniversaire de lorenzo
-hejolicoeur: C'est le jeudi 22 novembre 2007
-lorenzo a déja fêté ses 9 ans il y a 7 jours
+You: c'est quand l'anniversaire de lorenzo
+Jarvis: C'est le jeudi 22 novembre 2007
+lorenzo a dÃ©ja fÃªtÃ© ses 9 ans il y a 7 jours
 
-jibé: c'est quand noel
-hejolicoeur: noel, c'est le dimanche 25 décembre 2016
+You: c'est quand noÃ«l
+Jarvis: noel, c'est le dimanche 25 dÃ©cembre 2016
 C'est dans 37 jour
 
 ```
