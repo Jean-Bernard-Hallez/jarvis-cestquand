@@ -30,4 +30,4 @@ C'est dans 37 jour
 ```
 
 ## Author
-[Jean-Bernard Hallez](https://github.com/Jean-Bernard-Hallez/jarvis-ephemeride)
+[Jean-Bernard Hallez](https://github.com/Jean-Bernard-Hallez/jarvis-cestquand)
