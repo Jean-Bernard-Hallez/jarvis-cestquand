@@ -69,10 +69,10 @@ do
 local nom="$(jv_sanitize "$device" ".*")"
 local cherche="$(jv_sanitize "$b" ".*")"
 if [[ "$nom" == "$cherche" ]]; then
-ladate="$(echo "$pourquand" | jq -r ".devices[] | select(.nom==\"$device\") | .voiciladate")"
+ladate="$(echo "$cestpourquand" | jq -r ".devices[] | select(.nom==\"$device\") | .voiciladate")"
 return
 fi
-done <<< "$(echo "$pourquand" | jq -r '.devices[].nom')"
+done <<< "$(echo "$cestpourquand" | jq -r '.devices[].nom')"
 echo "Désolé, pas de date trouvé pour $b"
 
 }

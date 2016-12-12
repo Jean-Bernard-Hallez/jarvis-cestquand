@@ -4,7 +4,7 @@
 # Si l'année est inférieur à l age actuelle Jarvis indiquera l AGE de la date en question...
 # Afin de bien parametrer la diction, veuillez lancer Jarvis en mode  "Troubleshooting mode"  et prononcer votre phrase de vous recopierai dans le fichier config.sh
 
-pourquand='{ "devices":[
+cestpourquand='{ "devices":[
 { "voiciladate": "01/01/2017", "nom": "le jour de lAn"},
 { "voiciladate": "12/25/2016", "nom": "Noel"},
 { "voiciladate": "05/15/2009", "nom": "lanniversaire de Valentin"},
