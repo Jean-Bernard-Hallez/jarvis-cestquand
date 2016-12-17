@@ -11,7 +11,7 @@ For multi-language plugin:
 -->
 ## Description
 
-(12/12/2016: Correction d un bug entre 2 variables...)
+(18/12/2016: Correction d un bug entre 2 plugins...)
 
 Annonce combien de jour il reste avant un évenement enregistré dans le config.sh de jarvis.
 Pour les différents anniversaire ... date importante comme Noël...

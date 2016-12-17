@@ -3,7 +3,7 @@
 combiendetemps() {
 
 b=`echo "$order"| cut -c13-`
-cestquand
+cestpourquand
 if [[ "$ladate" == "" ]]; then
 return
 fi
@@ -62,7 +62,7 @@ fi
 
 }
 
-cestquand () {
+cestpourquand() {
 
 while read device
 do
