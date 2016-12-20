@@ -10,7 +10,7 @@ For multi-language plugin:
 - optionally write the Description / Usage sections in several languages
 -->
 ## Description
-
+(20/12/2016: Anonnce le prochain evenement...)
 (18/12/2016: Correction d un bug entre 2 plugins...)
 
 Annonce combien de jour il reste avant un évenement enregistré dans le config.sh de jarvis.
@@ -29,6 +29,11 @@ lorenzo a déja fêté ses 9 ans il y a 7 jours
 You: c'est quand noël
 Jarvis: noel, c'est le dimanche 25 décembre 2016
 C'est dans 37 jour
+
+NOUVEAU: 
+
+You: Quel est le prochain evenement ?
+Jarvis: Je recherche... il y a 2 dates ce mois-ci: le vendredi 30 décembre 2016 c'est lanniversaire de Paul !!!... le dimanche 25 décembre 2016 c'est Noel !!!...
 
 ```
 ## Author
