@@ -1,1 +1,2 @@
+*PROCHAIN*EVENEMENT*==say "Je recherche... $(prochainevenement)"
 *EST QUAND*==say "$(combiendetemps)"
