@@ -2,7 +2,7 @@
 
 
 prochainevenement() {
-b=$(date -d "$ladate" +%m) # mois de la date à vérifier
+b=$(date -d "$ladate" +%m) # mois de la date Ã  vÃ©rifier
 nbrtour=0
 dirtour=""
 # NOW="03/01/2016"
@@ -36,12 +36,12 @@ combiendetempscestpour() {
 if  [[ "$verifcestdans" == "-" ]]; then
 nomann=`echo "$order"| cut -c31-`
 cestdans=$((($(date -d $ladate +%s)-$(date -d $NOW +%s))/86400)) 
-local date1=$(date -d "$NOW" +%Y) # l'année en cours
-local date2=$(date -d "$ladate" +%Y) # année de la date à vérifier
+local date1=$(date -d "$NOW" +%Y) # l'annÃ©e en cours
+local date2=$(date -d "$ladate" +%Y) # annÃ©e de la date Ã  vÃ©rifier
 local date3=$(date -d "$ladate" +%m/%d/$(date -d "$NOW" +%Y)) # configuration date pour soustraction
-local arbre=`echo "$date1 - $date2" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"` # Résultat par soustraction des 2 dates afin d'avoir son age
-local etcest=$((($(date -d $NOW +%s)-$(date -d $date3 +%s))/86400)) # Résultat par soustraction pour nbr de jour restant
-local cestpassemois=$(date -d "$ladate" +%m) # mois de la date à vérifier
+local arbre=`echo "$date1 - $date2" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"` # RÃ©sultat par soustraction des 2 dates afin d'avoir son age
+local etcest=$((($(date -d $NOW +%s)-$(date -d $date3 +%s))/86400)) # RÃ©sultat par soustraction pour nbr de jour restant
+local cestpassemois=$(date -d "$ladate" +%m) # mois de la date Ã  vÃ©rifier
 local cestmois=$(date -d "$NOW" +%m) # mois en cours
 testlemois
 
@@ -103,8 +103,8 @@ NOWMois=$(date +"%m")
 NOWJour=$(date +"%d")
 ladate1=$(date -d $ladate +%d" "%B" "%Y)
 cestjour=$(date -d $ladate +%A)
-local date1=$(date -d "$NOW" +%Y) # l'année en cours
-local date2=$(date -d "$ladate" +%Y) # année de la date à vérifier
+local date1=$(date -d "$NOW" +%Y) # l'annÃ©e en cours
+local date2=$(date -d "$ladate" +%Y) # annÃ©e de la date Ã  vÃ©rifier
 local arbre=`echo "$date1 - $date2" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
 
 
@@ -180,4 +180,5 @@ return
 fi
 return
 }
+
 

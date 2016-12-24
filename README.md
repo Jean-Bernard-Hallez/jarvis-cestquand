@@ -10,6 +10,7 @@ For multi-language plugin:
 - optionally write the Description / Usage sections in several languages
 -->
 ## Description
+(24/12/2016: unicode UFT8 Ok...)
 (20/12/2016: Anonnce le prochain evenement...)
 (18/12/2016: Correction d un bug entre 2 plugins...)
 
