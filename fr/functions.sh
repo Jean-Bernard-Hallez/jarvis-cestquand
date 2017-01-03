@@ -50,7 +50,7 @@ testlemois
 	return
 	fi
 
-	echo "C'est le $cestjour $ladate1"
+	say "C'est le $cestjour $ladate1"
 
 	if [[ "$cestpassemois" -le "$cestmois" ]]; then
 		if [[ "$arbre" == 0 ]]; then
