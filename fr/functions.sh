@@ -46,7 +46,7 @@ local cestmois=$(date -d "$NOW" +%m) # mois en cours
 testlemois
 
 	if  [[ "$etcest" == "0" ]]; then
-	echo "$nomann fêtes ses $arbre an aujoud'hui ! Bon Anniversaire !!!"
+	say "$nomann fêtes ses $arbre an aujoud'hui ! Bon Anniversaire !!!"
 	return
 	fi
 
@@ -54,24 +54,22 @@ testlemois
 
 	if [[ "$cestpassemois" -le "$cestmois" ]]; then
 		if [[ "$arbre" == 0 ]]; then
-		echo "c'est passé il y a $etcest jours"
+		say  "c'est passé il y a $etcest jours"
 		else
-		echo "$nomann a déja fêté ses $arbre ans il y a $etcest jours"
+		say "$nomann a déja fêté ses $arbre ans il y a $etcest jours"
 		fi
 		return
 	else
-		echo "$nomann fêtes ses $arbre ans dans $etcest jours"
+		say "$nomann fêtes ses $arbre ans dans $etcest jours"
 		return
 	fi
 
 fi
 
 	if [[ "$cestdans" == "0" ]]; then
-	echo "$b, c'est le $ladate1"
-	echo "C'est aujoud'hui !"
+	say  "$b, c'est le $ladate1, c'est aujoud'hui !"
 	else
-	echo "$b, c'est le $cestjour $ladate1"
-	echo "C'est dans $cestdans jour"
+	say  "$b, c'est le $cestjour $ladate1, c'est dans $cestdans jour"
 	fi
 }
 
@@ -85,7 +83,7 @@ ladate="$(echo "$cestpourquand" | jq -r ".devices[] | select(.nom==\"$device\") 
 return
 fi
 done <<< "$(echo "$cestpourquand" | jq -r '.devices[].nom')"
-echo "Désolé, pas de date trouvé pour $b"
+say "Désolé, pas de date trouvé pour $b"
 }
 
 
@@ -124,9 +122,9 @@ if [[ "$NOWMois"  == "$ladateMois" ]]; then
 fi
 done <<< "$(echo "$cestpourquand" | jq -r '.devices[].nom')"
 if [[ "$nbrtour"  == "0" ]]; then
-echo "il n'y a rien pour ce mois-ci..."
+say "il n'y a rien pour ce mois-ci..."
 else
-echo "pour ce mois-ci, il y a $nbrtour dates: $dirtour"
+say "pour ce mois-ci, il y a $nbrtour dates: $dirtour"
 fi
 }
 

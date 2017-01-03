@@ -1,2 +1,2 @@
-*PROCHAIN*EVENEMENT*==say "Je recherche... $(prochainevenement)"
-*EST QUAND*==say "$(combiendetemps)"
+*PROCHAIN*EVENEMENT*|*PROCHAIN*ANNIVERSAIRE*==prochainevenement
+*EST QUAND*==combiendetemps
