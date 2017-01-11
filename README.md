@@ -18,6 +18,10 @@ For multi-language plugin:
 Annonce combien de jour il reste avant un évenement enregistré dans le config.sh de jarvis.
 Pour les différents anniversaire ... date importante comme Noël...
 
+## Languages
+
+* Français
+
 ## Usage
 ```
 You: C'est quand l'anniversaire de léa
