@@ -1,76 +1,6 @@
 #!/bin/bash
+# ---------------------------------
 
-# bash plugins/jarvis-cestquand/verifdate1.sh
-
-prochainevenement123() {
-vardateprochain="plugins/jarvis-cestquand/dateprochaine.txt"
-if [ -f "$vardateprochain" ]; then
-echo "Ok il existe le fichier........"
-# variable=`grep xferErrs $vardateprochai | cut -d"," -f1`
-
-variablecompte=`grep -o , $vardateprochain|wc -l`
-variable=`grep , $vardateprochain`
-variablecut=`echo $variable |cut -d"," -f1`
-say "Attention... il y a un évenement $variablecut"
-curl "http://192.168.0.17:8087?order=c'est quand $variablecut"
-
-# fichier existe
-# compte le nombre de variable et prononce l'anniversaire par repérage de virgule
-else
-echo "Fichier existe pas....."
-b=$(date -d "$ladate" +%m) # mois de la date à vérifier
-nbrtour=0
-dirtour=""
-while read device
-do
-nom="$(jv_sanitize "$device" ".*")"
-cherche="$(jv_sanitize "$b" ".*")"
-ladate="$(echo "$cestpourquand" | jq -r ".devices[] | select(.nom==\"$device\") | .voiciladate")"
-leNOM="$(echo "$cestpourquand" | jq -r ".devices[] | select(.nom==\"$device\") | .nom")"
-ladateMois=`echo $ladate | cut -d"/" -f1`
-ladateJour=`echo $ladate | cut -d"/" -f2`
-NOW=$(date +"%m/%d/%Y")
-NOWMois=$(date +"%m")
-NOWJour=$(date +"%d")
-ladate1=$(date -d $ladate +%d" "%B" ")
-cestjour=$(date -d $ladate +%A)
-date1=$(date -d "$NOW" +%Y) # l'année en cours
-date2=$(date -d "$ladate" +%Y) # année de la date à vérifier
-arbre=`echo "$date1 - $date2" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
-
-echo "----- $leNOM --$NOWMois--$ladateMois-"
-
-if [[ "$NOWMois"  == "$ladateMois" ]]; then
-
-	if [[ "$NOWJour" < "$ladateJour" ]]; then
-		if [[ "$arbre" = "0" ]]; then
-		nbrtour=`echo "$nbrtour + 1" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
-		enregdateprochaine="$leNOM..."
-		else
-		nbrtour=`echo "$nbrtour + 1" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
-		enregdateprochaine=("$leNOM, $enregdateprochaine")
-		fi
-
-		if [[ "$nbrtour" = "2" ]]; then	
-		return
-		fi
-	fi
-
-
-fi
-
-
-done <<< "$(echo "$cestpourquand" | jq -r '.devices[].nom')"
-#----------------------
-echo "$enregdateprochaine" > $vardateprochain
-echo "Fin du calcul il y a $enregdateprochaine"
-
-if [[ "$nbrtour"  == "0" ]]; then
-enregdateprochaine=""
-fi
-
-fi
-}
 
 
 prochainevenement() {
@@ -194,18 +124,26 @@ cestjour=$(date -d $ladate +%A)
 local date1=$(date -d "$NOW" +%Y) # l'année en cours
 local date2=$(date -d "$ladate" +%Y) # année de la date à vérifier
 local arbre=`echo "$date1 - $date2" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
+local adirej=""
+local ajourdhui=""
 
 
 if [[ "$NOWMois"  == "$ladateMois" ]]; then
 
-	if [[ "$NOWJour" < "$ladateJour" ]]; then
-		if [[ "$arbre" = "0" ]]; then
+
+	if [ "$NOWJour" -le "$ladateJour" ]; then
+
+resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
+
+#		if [[ "$arbre" == "1" ]]; then
+		if [ "$resultprochain" = "0" ]; then
 		nbrtour=`echo "$nbrtour + 1" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
-		say "le $cestjour $ladate1 et c'est $leNOM..."
+		ajourdhui="Ok"
+		say "C'est aujourd'hui et c'est $leNOM..."
 		else
 		nbrtour=`echo "$nbrtour + 1" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
 		resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
-		say "le $cestjour $ladate1 dans $resultprochain jours et ça sera les $arbre ans de $leNOM."
+		say "le $ladate $lenom dans $resultprochain jours et ça sera les $arbre ans de $leNOM."
 		fi
 
 		if [[ "$nbrtour" = "2" ]]; then	
@@ -215,11 +153,27 @@ if [[ "$NOWMois"  == "$ladateMois" ]]; then
 	fi
 	
 fi
-done <<< "$(echo "$cestpourquand" | jq -r '.devices[].nom')"
 
-if [[ "$nbrtour"  == "0" ]]; then
-say "il n'y a rien pour ce mois-ci..."
+if [ "$NOWMois" -lt "$ladateMois" ]; then
+		nbrtour=`echo "$nbrtour + 1" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
+		adirej="Prochain évènement pas avant le $ladate1 pour $leNOM."
+	if [[ "$nbrtour" = "1" ]]; then	
+	say "il n'y a rien pour ce mois-ci... $adirej"
+	return
+	fi
 fi
+
+
+done <<< "$(echo "$cestpourquand" | jq -r '.devices[].nom')"
+if [[ "$nbrtour" == "0" ]]; then
+say "il n'y a rien pour ce mois-ci... $adirej"
+return
+fi
+
+if [[ "$adirej"  != " " ]] && [[ "$ajourdhui"  != "" ]]; then
+say "il n'y a rien pour ce mois-ci... $adirej"
+fi
+
 	
 }
 

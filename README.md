@@ -10,6 +10,8 @@ For multi-language plugin:
 - optionally write the Description / Usage sections in several languages
 -->
 ## Description
+(01/02/17 Prob avec certaines date corrigées)
+(11/01/17 Annonce 1 fois par jour, à l'ouverture de Jarvis un évènement qui va se passer d'ici X prochains jours)
 (03/01/17 correction ce compatibilité avec Jarvis UI)
 (24/12/2016: unicode UFT8 Ok...)
 (20/12/2016: Anonnce le prochain evenement...)
