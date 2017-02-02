@@ -1,7 +1,11 @@
 #!/bin/bash
 # ---------------------------------
 
-
+jv_pg_ct_queljourdesemaine() {
+echo "$order"
+# ladate1=$(date -d "2/2/2017" +%A)
+#echo "$ladate1"
+}
 
 jv_pg_ct_prochainevenement() {
 b=$(date -d "$ladate" +%m) # mois de la date à vérifier
@@ -42,7 +46,9 @@ local date1=$(date -d "$NOW" +%Y) # l'année en cours
 local date2=$(date -d "$ladate" +%Y) # année de la date à vérifier
 local date3=$(date -d "$ladate" +%m/%d/$(date -d "$NOW" +%Y)) # configuration date pour soustraction
 local arbre=`echo "$date1 - $date2" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"` # Résultat par soustraction des 2 dates afin d'avoir son age
-local etcest=$((($(date -d $NOW +%s)-$(date -d $date3 +%s))/86400)) # Résultat par soustraction pour nbr de jour restant
+local etcest=`echo $((($(date -d $NOW +%s)-$(date -d $date3 +%s))/86400)) | sed "s/-//g"`
+ # Résultat par soustraction pour nbr de jour restant
+
 # correction de 2 à un chiffre"
 cestpassemois=$(date -d "$NOW" +%m) # mois en cours
 local cestpassejour=$(date -d "$NOW" +%d) # jour en cours
@@ -88,7 +94,8 @@ fi
 	if [[ "$cestdans" == "0" ]]; then
 	say  "$b, c'est le $ladate1, c'est aujoud'hui !"
 	else
-	say  "$b, c'est le $cestjour $ladate1, c'est dans $cestdans jour"
+
+	say  "$b, c'est le $cestjour $ladate1, c'est dans $etcest jour "
 	fi
 }
 
