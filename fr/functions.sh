@@ -3,7 +3,7 @@
 
 
 
-prochainevenement() {
+jv_pg_ct_prochainevenement() {
 b=$(date -d "$ladate" +%m) # mois de la date à vérifier
 nbrtour=0
 dirtour=""
@@ -14,7 +14,7 @@ cestpourquandprochain
 }
 
 
-combiendetemps() {
+jv_pg_ct_combiendetemps() {
 b=`echo "$order"| cut -c13-`
 cestpourquand
 if [[ "$ladate" == "" ]]; then
