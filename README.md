@@ -10,7 +10,7 @@ For multi-language plugin:
 - optionally write the Description / Usage sections in several languages
 -->
 ## Description
-(01/02/17)
+(01/02/17 Pour savoir quel jour correspond une date précide dire c'est quel jour le 31 aoùt 1974 ?)
 (11/01/17 CA BUG... EN CORS DE TRAITEMENT... Annonce 1 fois par jour, à l'ouverture de Jarvis un évènement qui va se passer d'ici X prochains jours)
 (03/01/17 correction ce compatibilité avec Jarvis UI)
 (24/12/2016: unicode UFT8 Ok...)
@@ -38,10 +38,13 @@ You: c'est quand noël
 Jarvis: noel, c'est le dimanche 25 décembre 2016
 C'est dans 37 jour
 
-NOUVEAU: 
-
 You: Quel est le prochain evenement ?
 Jarvis: Je recherche... il y a 2 dates ce mois-ci: le vendredi 30 décembre 2016 c'est lanniversaire de Paul !!!... le dimanche 25 décembre 2016 c'est Noel !!!...
+
+NOUVEAU: 
+You: C'est quel jour le 31 août 1974 ?
+Jarvis: Le 31 août 1974 est un Samedi
+
 
 ```
 ## Author

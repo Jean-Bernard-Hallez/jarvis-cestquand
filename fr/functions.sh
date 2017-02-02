@@ -1,10 +1,62 @@
 #!/bin/bash
 # ---------------------------------
+jv_pg_ct_chainenumerique() {
+[ $maman1 -eq 0 ] 2> /dev/null 
+if [ $? -eq 0 -o $? -eq 1 ] 
+then 
+chainenum="Ok" 
+else
+chainenum=""
+fi 
 
-jv_pg_ct_queljourdesemaine() {
-echo "$order"
-# ladate1=$(date -d "2/2/2017" +%A)
-#echo "$ladate1"
+}
+
+jv_pg_ct_lejourdelasemainecest() {
+
+# echo il était une fois | sed 's/il était/ /g'
+echo "$maman"
+maman1=`echo "$maman" | cut -f 1 -d ' '`
+
+jv_pg_ct_chainenumerique
+if [[ "$chainenum" == "Ok" ]]; then
+maman1=`echo "$maman" | cut -f 1 -d ' '`
+maman2=`echo "$maman" | cut -f 2 -d ' '`
+maman3=`echo "$maman" | cut -f 3 -d ' '`
+else 
+
+maman1=`echo "$maman" | cut -f 2 -d ' '`
+jv_pg_ct_chainenumerique
+if [[ "$chainenum" == "Ok" ]]; then
+maman1=`echo "$maman" | cut -f 2 -d ' '`
+maman2=`echo "$maman" | cut -f 3 -d ' '`
+maman3=`echo "$maman" | cut -f 4 -d ' '`
+
+else
+
+maman1=`echo "$maman" | cut -f 3 -d ' '`
+jv_pg_ct_chainenumerique
+if [[ "$chainenum" == "Ok" ]]; then
+maman1=`echo "$maman" | cut -f 3 -d ' '`
+maman2=`echo "$maman" | cut -f 4 -d ' '`
+maman3=`echo "$maman" | cut -f 5 -d ' '`
+
+else
+
+echo "impossible de trouver une date dans votre formule"
+return
+
+fi; fi; fi
+
+testlemoisinverse
+
+ladate1=$(date -d "$cestpassemois/$maman1/$maman3" +%A)
+
+if [[ "$cestpassemois" != "" ]]; then
+say "le $maman1 $cestpassemoisd $maman3 c'est un $ladate1 "
+fi
+
+
+
 }
 
 jv_pg_ct_prochainevenement() {
@@ -232,6 +284,90 @@ if [[ "$cestpassemois" == "09" ]]; then
 cestpassemois=9
 return
 fi
+return
+}
+
+testlemoisinverse() {
+cestpassemois=""
+cestpassemoisd=""
+
+if [[ "$maman2" == "janvier" ]]; then
+cestpassemois=1
+cestpassemoisd="janvier"
+return
+fi
+
+if [[ "$maman2" == "fevrier" ]]; then
+cestpassemois=2
+cestpassemoisd="février"
+return
+fi
+
+if [[ "$maman2" == "mars" ]]; then
+cestpassemoisd="mars"
+cestpassemois=3
+return
+fi
+
+if [[ "$maman2" == "avril" ]]; then
+cestpassemoisd="avril"
+cestpassemois=4
+return
+fi
+
+if [[ "$maman2" == "mai" ]]; then
+cestpassemoisd="mai"
+cestpassemois=5
+return
+fi
+
+if [[ "$maman2" == "juin" ]]; then
+cestpassemoisd="juin"
+cestpassemois=6
+return
+fi
+
+if [[ "$maman2" == "juillet" ]]; then
+cestpassemoisd="juillet"
+cestpassemois=7
+return
+fi
+
+if [[ "$maman2" == "aout" ]]; then
+cestpassemoisd="août"
+cestpassemois=8
+return
+fi
+
+
+if [[ "$maman2" == "septembre" ]]; then
+cestpassemoisd="septembre"
+cestpassemois=9
+return
+fi
+
+if [[ "$maman2" == "octobre" ]]; then
+cestpassemoisd="octobre"
+cestpassemois=10
+return
+fi
+
+if [[ "$maman2" == "novembre" ]]; then
+cestpassemoisd="novembre"
+cestpassemois=11
+return
+fi
+
+if [[ "$maman2" == "decembre" ]]; then
+cestpassemoisd="décembre"
+cestpassemois=12
+return
+fi
+
+if [[ "$cestpassemois" == "" ]]; then
+say "J'ai un problème de reconnaissance avec le mois énnoncée, veuillez reformuler"
+fi
+
 return
 }
 
