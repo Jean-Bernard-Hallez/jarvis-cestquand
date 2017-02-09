@@ -14,7 +14,6 @@ fi
 jv_pg_ct_lejourdelasemainecest() {
 
 # echo il était une fois | sed 's/il était/ /g'
-echo "$maman"
 maman1=`echo "$maman" | cut -f 1 -d ' '`
 
 jv_pg_ct_chainenumerique
@@ -42,7 +41,7 @@ maman3=`echo "$maman" | cut -f 5 -d ' '`
 
 else
 
-echo "impossible de trouver une date dans votre formule"
+say "impossible de trouver une date dans votre formule"
 return
 
 fi; fi; fi
