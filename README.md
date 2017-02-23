@@ -10,6 +10,7 @@ For multi-language plugin:
 - optionally write the Description / Usage sections in several languages
 -->
 ## Description
+(23/02/17 Préparaion pour fonctionner avc un PIR)
 (01/02/17 Pour savoir quel jour correspond une date précide dire c'est quel jour le 31 aoùt 1974 ?)
 (11/01/17 CA BUG... EN CORS DE TRAITEMENT... Annonce 1 fois par jour, à l'ouverture de Jarvis un évènement qui va se passer d'ici X prochains jours)
 (03/01/17 correction ce compatibilité avec Jarvis UI)

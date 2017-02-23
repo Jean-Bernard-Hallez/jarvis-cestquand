@@ -21,6 +21,9 @@ if [[ "$chainenum" == "Ok" ]]; then
 maman1=`echo "$maman" | cut -f 1 -d ' '`
 maman2=`echo "$maman" | cut -f 2 -d ' '`
 maman3=`echo "$maman" | cut -f 3 -d ' '`
+if [[ "$maman3" = "" ]]; then
+maman3=`date +%Y`
+fi
 else 
 
 maman1=`echo "$maman" | cut -f 2 -d ' '`
@@ -29,7 +32,9 @@ if [[ "$chainenum" == "Ok" ]]; then
 maman1=`echo "$maman" | cut -f 2 -d ' '`
 maman2=`echo "$maman" | cut -f 3 -d ' '`
 maman3=`echo "$maman" | cut -f 4 -d ' '`
-
+if [[ "$maman3" = "" ]]; then
+maman3=`date +%Y`
+fi
 else
 
 maman1=`echo "$maman" | cut -f 3 -d ' '`
@@ -38,7 +43,9 @@ if [[ "$chainenum" == "Ok" ]]; then
 maman1=`echo "$maman" | cut -f 3 -d ' '`
 maman2=`echo "$maman" | cut -f 4 -d ' '`
 maman3=`echo "$maman" | cut -f 5 -d ' '`
-
+if [[ "$maman3" = "" ]]; then
+maman3=`date +%Y`
+fi
 else
 
 say "impossible de trouver une date dans votre formule"
@@ -51,6 +58,8 @@ testlemoisinverse
 ladate1=$(date -d "$cestpassemois/$maman1/$maman3" +%A)
 
 if [[ "$cestpassemois" != "" ]]; then
+
+
 say "le $maman1 $cestpassemoisd $maman3 c'est un $ladate1 "
 fi
 
@@ -198,10 +207,13 @@ resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0
 		nbrtour=`echo "$nbrtour + 1" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
 		ajourdhui="Ok"
 		say "C'est aujourd'hui et c'est $leNOM..."
+		echo"1" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
 		else
 		nbrtour=`echo "$nbrtour + 1" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
 		resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
 		say "le $ladate $lenom dans $resultprochain jours et ça sera les $arbre ans de $leNOM."
+		echo"Ok" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+
 		fi
 
 		if [[ "$nbrtour" = "2" ]]; then	
@@ -216,7 +228,8 @@ if [ "$NOWMois" -lt "$ladateMois" ]; then
 		nbrtour=`echo "$nbrtour + 1" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
 		adirej="Prochain évènement pas avant le $ladate1 pour $leNOM."
 	if [[ "$nbrtour" = "1" ]]; then	
-	say "il n'y a rien pour ce mois-ci... $adirej"
+	say "il n'y a rien pour ce mois-ci... $adirej"	
+	echo"" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
 	return
 	fi
 fi
@@ -225,11 +238,13 @@ fi
 done <<< "$(echo "$cestpourquand" | jq -r '.devices[].nom')"
 if [[ "$nbrtour" == "0" ]]; then
 say "il n'y a rien pour ce mois-ci... $adirej"
+echo"" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
 return
 fi
 
 if [[ "$adirej"  != " " ]] && [[ "$ajourdhui"  != "" ]]; then
 say "il n'y a rien pour ce mois-ci... $adirej"
+echo"" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
 fi
 
 	
@@ -368,6 +383,11 @@ say "J'ai un problème de reconnaissance avec le mois énnoncée, veuillez refor
 fi
 
 return
+}
+
+jv_pg_ct_pourpluginpiresclave() {
+renvoiepir=`cat $jv_dir/plugins/jarvis-cestquand/riencemoici.txt`
+say "$renvoiepir"
 }
 
 
