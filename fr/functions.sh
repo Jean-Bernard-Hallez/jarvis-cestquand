@@ -67,25 +67,50 @@ fi
 
 }
 
-jv_pg_ct_prochainevenement() {
-b=$(date -d "$ladate" +%m) # mois de la date à vérifier
-nbrtour=0
-dirtour=""
-# NOW="03/01/2016"
-# NOWMois="03"
-# NOWJour="01"
-cestpourquandprochain
-}
-
 
 jv_pg_ct_combiendetemps() {
 b=`echo "$order"| cut -c13-`
 cestpourquand
+
 if [[ "$ladate" == "" ]]; then
+say "Désolé je n'ai rien trouvé pour $b"
 return
 fi
 combiendetempsdate
 combiendetempscestpour
+
+	
+}
+
+cestpourquand() {
+
+chemin=${PWD}"/plugins/jarvis-cestquand"
+btotal=`echo $b | grep " " | wc -w`
+bb=`echo "$b" | cut -d' ' -f$(( $btotal - 1 ))-`
+bb=`jv_sanitize "$bb"`
+lignetotal=`grep -c '# ###'  $chemin/config.sh`
+
+while test  "$lignenumero" != "$lignetotal"
+
+do
+lignenumero=$(( $lignenumero + 1 ))
+ligne=`grep '# ###'  $chemin/config.sh | sed -e "s/# ### //g" | sed -n $lignenumero\p`
+ligne=`jv_sanitize "$ligne"`
+	
+	if [[ "$ligne" =~ "$bb" ]]; then 
+	leNOM=`echo $ligne | cut -c12-`
+	ladateJour=`echo $ligne | cut -c1-2`
+	ladateMois=`echo $ligne | cut -c3-4`
+	ladateAnnee=`echo $ligne | cut -c5-8`
+	ladate="$ladateMois/$ladateJour/$ladateAnnee"
+	fi
+
+if [ "$lignenumero" -gt "$lignetotal" ]; then
+return
+fi
+
+done
+
 }
 
 combiendetempsdate() {
@@ -100,7 +125,7 @@ verifcestdans=`echo "$cestdans"| cut -c1`
 
 combiendetempscestpour() {
 if  [[ "$verifcestdans" == "-" ]]; then
-nomann=`echo "$order"| cut -c31-`
+nomann=`jv_sanitize "$order"| cut -c29-`
 cestdans=$((($(date -d $ladate +%s)-$(date -d $NOW +%s))/86400)) 
 local date1=$(date -d "$NOW" +%Y) # l'année en cours
 local date2=$(date -d "$ladate" +%Y) # année de la date à vérifier
@@ -127,7 +152,7 @@ testlemois
 	return
 	fi
 
-	say "C'est le $cestjour $ladate1"
+#	say "C'est le $cestjour $ladate1"
 
 	if [[ "$cestpassemois" -le "$cestmois" ]]; then
 
@@ -159,55 +184,156 @@ fi
 	fi
 }
 
-cestpourquand() {
-while read device
-do
-local nom="$(jv_sanitize "$device" ".*")"
-local cherche="$(jv_sanitize "$b" ".*")"
-if [[ "$nom" == "$cherche" ]]; then
-ladate="$(echo "$cestpourquand" | jq -r ".devices[] | select(.nom==\"$device\") | .voiciladate")"
+
+
+jv_pg_ct_prochainevenement() {
+chemin=${PWD}"/plugins/jarvis-cestquand"
+NOW=$(date +"%m/%d/%Y")
+NOWJour=$(date +"%d")
+NOWMois=$(date +"%m")
+NOWANNEE=$(date -d "$NOW" +%Y) # l'année en cours
+MoisProchain=$(date -d "month" +"%m")
+
+lignemoi=`grep '# ### '   $chemin/config.sh | grep -n '/'$NOWMois'/'`
+ligneprochain=`grep '# ### '   $chemin/config.sh | grep -n '/'$MoisProchain'/'`
+lignetotalmoiencours=`grep '# ### '   $chemin/config.sh | grep -c '/'$NOWMois'/'`
+lignetotalprochain=`grep '# ### '   $chemin/config.sh | grep -c '/'$MoisProchain'/'`
+
+# Je vérifie si il y aura des anniversaire ce moi ci:
+if [ "$lignetotalmoiencours" = "0" ]; then
+say "il n'y a rien pour ce mois-ci... "
+cestpourquandprochainmoi
 return
 fi
-done <<< "$(echo "$cestpourquand" | jq -r '.devices[].nom')"
-say "Désolé, pas de date trouvé pour $b"
+
+while test  "$num" != "$lignetotalmoiencours"
+num=$(($num + 1))
+
+do
+
+ligne=`grep '# ### '  $chemin/config.sh | grep '/'$NOWMois'/' | sed -e "s/# ### //g" | sed -n $num\p`
+leNOM=`echo $ligne | cut -c12-`
+ladateJour=`echo $ligne | cut -c1-2`
+ladateMois=`echo $ligne | cut -c4-5`
+ladateAnnee=`echo $ligne | cut -c7-10`
+ladate="$ladateMois/$ladateJour/$ladateAnnee"
+ladateMoisEntier=`date -d "$ladate" +"%B"`
+ladatejourEntier=`date -d "$ladate" +"%A"`
+
+local arbre=`echo "$NOWANNEE - $ladateAnnee" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"` # Résultat par soustraction des 2 dates afin d'avoir son age
+
+
+
+# Je vérifie si le jour d'aujourd'hui est bien plus petit de jour date anniversaire
+
+if [ "$NOWJour" -le "$ladateJour" ]; then # si aujourd'hui < ou = le jour recherché dans config
+
+		resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
+
+		if [ "$resultprochain" = "0" ]; then
+		ajourdhui="Ok"
+		say "C'est aujourd'hui et c'est $leNOM..."
+		echo "1" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+		else
+			if [ "$arbre" = "0" ]; then
+			resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
+			say "le $ladatejourEntier $ladateJour $ladateMoisEntier $lenom dans $resultprochain jours et ç'est pour $leNOM."
+			echo "Ok" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+			
+			else
+				resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
+				say "le $ladatejourEntier $ladateJour $ladateMoisEntier $lenom dans $resultprochain jours et ça sera les $arbre ans de $leNOM."
+				echo "Ok" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+			fi
+			
+		fi
+
+if [ "$num" -ge "$lignetotalmoiencours" ]; then
+return
+fi
+
+
+fi
+done
+
 }
 
 
+cestpourquandprochainmoi() {
+# Je vérifie si il y aura des anniversaire le moi prochain:
+if [ "$lignetotalprochain" = "0" ]; then
+say "il n'y a rien pour le mois prochain désolé... "
+# Voir quand le prochain evènement !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+return
+fi
 
-cestpourquandprochain() {
-while read device
+while test  "$num" != "$lignetotalprochain"
+num=$(($num + 1))
+
 do
-local nom="$(jv_sanitize "$device" ".*")"
-local cherche="$(jv_sanitize "$b" ".*")"
-ladate="$(echo "$cestpourquand" | jq -r ".devices[] | select(.nom==\"$device\") | .voiciladate")"
-leNOM="$(echo "$cestpourquand" | jq -r ".devices[] | select(.nom==\"$device\") | .nom")"
-ladateMois=`echo $ladate | cut -d"/" -f1`
-ladateJour=`echo $ladate | cut -d"/" -f2`
-NOW=$(date +"%m/%d/%Y")
-NOWMois=$(date +"%m")
-NOWJour=$(date +"%d")
-ladate1=$(date -d $ladate +%d" "%B" ")
-cestjour=$(date -d $ladate +%A)
-local date1=$(date -d "$NOW" +%Y) # l'année en cours
-local date2=$(date -d "$ladate" +%Y) # année de la date à vérifier
-local arbre=`echo "$date1 - $date2" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
-local adirej=""
-local ajourdhui=""
+
+ligne=`grep '# ### '  $chemin/config.sh | grep '/'$MoisProchain'/' | sed -e "s/# ### //g" | sed -n $num\p`
+leNOM=`echo $ligne | cut -c12-`
+ladateJour=`echo $ligne | cut -c1-2`
+ladateMois=`echo $ligne | cut -c4-5`
+ladateAnnee=`echo $ligne | cut -c7-10`
+ladate="$ladateMois/$ladateJour/$ladateAnnee"
+ladate2="$ladateMois/$ladateJour/`date +"%Y"`"
+ladateMoisEntier=`date -d "$ladate" +"%B"`
+ladatejourEntier=`date -d "$ladate" +"%A"`
+local arbre=`echo "$NOWANNEE - $ladateAnnee" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"` # Résultat par soustraction des 2 dates afin d'avoir son age
+local etcest=`echo $((($(date -d $NOW +%s)-$(date -d $ladate2 +%s))/86400)) | sed "s/-//g"`  # Résultat en nombre de jour 
+
+# Je vérifie si le jour d'aujourd'hui est bien plus petit de jour date anniversaire
+
+if [ "$NOWJour" -le "$ladateJour" ]; then # si aujourd'hui < ou = le jour recherché dans config
+		resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
+
+		if [ "$resultprochain" = "0" ]; then
+		ajourdhui="Ok"
+		say "C'est aujourd'hui et c'est $leNOM..."
+		echo "1" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+		else
+
+			resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
+			say "le $ladatejourEntier $ladateJour $ladateMoisEntier $lenom dans $etcest jours et ça sera les $arbre ans de $leNOM."
+			echo "Ok" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+		fi
+
+if [ "$num" -ge "$lignetotalmoiencours" ]; then
+return
+fi
 
 
-if [[ "$NOWMois"  == "$ladateMois" ]]; then
+fi
+done
 
+}
 
-	if [ "$NOWJour" -le "$ladateJour" ]; then
+atrier() {
+ligne=`grep '# ### '  $chemin/config.sh | sed -n $num\p |  sed -e "s/# ### //g"`
+echo "$ligne-------------"
+leNOM=`echo $ligne | cut -c12-`
+ladateJour=`echo $ligne | cut -c1-2`
+ladateMois=`echo $ligne | cut -c4-5`
+ladateAnnee=`echo $ligne | cut -c7-10`
+ladate="$ladateMois/$ladateJour/$ladateAnnee"
 
-resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
+echo "$NOWMois  == $ladateMois"
+if [[ "$NOWMois"  == "$ladateMois" ]]; then # si le moi en cours correspond au mois recherché dans config
 
-#		if [[ "$arbre" == "1" ]]; then
+local arbre=`echo "$ladateAnnee - $date2" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"` # Résultat par soustraction des 2 dates afin d'avoir son age
+
+echo "$NOWJour -le $ladateJour" 
+	if [ "$NOWJour" -le "$ladateJour" ]; then # si aujourd'hui < ou = le jour recherché dans config
+
+		resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
+
 		if [ "$resultprochain" = "0" ]; then
 		nbrtour=`echo "$nbrtour + 1" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
 		ajourdhui="Ok"
 		say "C'est aujourd'hui et c'est $leNOM..."
-		echo"1" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+		echo "1" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
 		else
 		nbrtour=`echo "$nbrtour + 1" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
 		resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
@@ -235,9 +361,10 @@ if [ "$NOWMois" -lt "$ladateMois" ]; then
 fi
 
 
-done <<< "$(echo "$cestpourquand" | jq -r '.devices[].nom')"
+
+
 if [[ "$nbrtour" == "0" ]]; then
-say "il n'y a rien pour ce mois-ci... $adirej"
+say "ha, il n'y a rien pour ce mois-ci... $adirej"
 echo"" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
 return
 fi
