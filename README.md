@@ -10,6 +10,7 @@ For multi-language plugin:
 - optionally write the Description / Usage sections in several languages
 -->
 ## Description
+(24/03/17 Corection lors de la mise a jour du config avec #)
 (10/03/17 ---- modification pour une meilleur facilité d'utilisation du fichier "config.sh ----"
 (23/02/17 Préparaion pour fonctionner avc un PIR)
 (01/02/17 Pour savoir quel jour correspond une date précide dire c'est quel jour le 31 aoùt 1974 ?)

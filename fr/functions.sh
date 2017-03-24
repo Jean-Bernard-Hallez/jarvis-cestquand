@@ -88,13 +88,13 @@ chemin=${PWD}"/plugins/jarvis-cestquand"
 btotal=`echo $b | grep " " | wc -w`
 bb=`echo "$b" | cut -d' ' -f$(( $btotal - 1 ))-`
 bb=`jv_sanitize "$bb"`
-lignetotal=`grep -c '# ###'  $chemin/config.sh`
+lignetotal=`grep -c '#---#'  $chemin/config.sh`
 
 while test  "$lignenumero" != "$lignetotal"
 
 do
 lignenumero=$(( $lignenumero + 1 ))
-ligne=`grep '# ###'  $chemin/config.sh | sed -e "s/# ### //g" | sed -n $lignenumero\p`
+ligne=`grep '#---#'  $chemin/config.sh | sed -e "s/#---# //g" | sed -e "s/#//g" | sed -n $lignenumero\p`
 ligne=`jv_sanitize "$ligne"`
 	
 	if [[ "$ligne" =~ "$bb" ]]; then 
@@ -194,10 +194,10 @@ NOWMois=$(date +"%m")
 NOWANNEE=$(date -d "$NOW" +%Y) # l'année en cours
 MoisProchain=$(date -d "month" +"%m")
 
-lignemoi=`grep '# ### '   $chemin/config.sh | grep -n '/'$NOWMois'/'`
-ligneprochain=`grep '# ### '   $chemin/config.sh | grep -n '/'$MoisProchain'/'`
-lignetotalmoiencours=`grep '# ### '   $chemin/config.sh | grep -c '/'$NOWMois'/'`
-lignetotalprochain=`grep '# ### '   $chemin/config.sh | grep -c '/'$MoisProchain'/'`
+lignemoi=`grep '#---# '   $chemin/config.sh | sed -e "s/#//g" | grep -n '/'$NOWMois'/'`
+ligneprochain=`grep '#---# '   $chemin/config.sh | sed -e "s/#//g" | grep -n '/'$MoisProchain'/'`
+lignetotalmoiencours=`grep '#---# '   $chemin/config.sh | sed -e "s/#//g" | grep -c '/'$NOWMois'/'`
+lignetotalprochain=`grep '#---# '   $chemin/config.sh | sed -e "s/#//g" | grep -c '/'$MoisProchain'/'`
 
 # Je vérifie si il y aura des anniversaire ce moi ci:
 if [ "$lignetotalmoiencours" = "0" ]; then
@@ -206,12 +206,14 @@ cestpourquandprochainmoi
 return
 fi
 
+
+
 while test  "$num" != "$lignetotalmoiencours"
 num=$(($num + 1))
 
 do
 
-ligne=`grep '# ### '  $chemin/config.sh | grep '/'$NOWMois'/' | sed -e "s/# ### //g" | sed -n $num\p`
+ligne=`grep '#---# '  $chemin/config.sh | grep '/'$NOWMois'/' | sed -e "s/#---# //g" | sed -e "s/#//g" | sed -n $num\p`
 leNOM=`echo $ligne | cut -c12-`
 ladateJour=`echo $ligne | cut -c1-2`
 ladateMois=`echo $ligne | cut -c4-5`
@@ -248,13 +250,21 @@ if [ "$NOWJour" -le "$ladateJour" ]; then # si aujourd'hui < ou = le jour recher
 			
 		fi
 
+fi
+
 if [ "$num" -ge "$lignetotalmoiencours" ]; then
+	if [ "$resultprochain" = "" ]; then
+	say "il n'y a rien pour ce mois-ci... "
+	num=""
+	cestpourquandprochainmoi
+	# return
+	fi
 return
 fi
-
-
-fi
 done
+
+
+
 
 }
 
@@ -267,12 +277,14 @@ say "il n'y a rien pour le mois prochain désolé... "
 return
 fi
 
+NOWJour="1"
+
 while test  "$num" != "$lignetotalprochain"
 num=$(($num + 1))
-
 do
 
-ligne=`grep '# ### '  $chemin/config.sh | grep '/'$MoisProchain'/' | sed -e "s/# ### //g" | sed -n $num\p`
+
+ligne=`grep '#---# '  $chemin/config.sh | grep '/'$MoisProchain'/' | sed -e "s/#---# //g" | sed -e "s/#//g" | sed -n $num\p`
 leNOM=`echo $ligne | cut -c12-`
 ladateJour=`echo $ligne | cut -c1-2`
 ladateMois=`echo $ligne | cut -c4-5`
@@ -285,8 +297,7 @@ local arbre=`echo "$NOWANNEE - $ladateAnnee" | bc -l | sed "s/\([0-9]*\.[0-9][0-
 local etcest=`echo $((($(date -d $NOW +%s)-$(date -d $ladate2 +%s))/86400)) | sed "s/-//g"`  # Résultat en nombre de jour 
 
 # Je vérifie si le jour d'aujourd'hui est bien plus petit de jour date anniversaire
-
-if [ "$NOWJour" -le "$ladateJour" ]; then # si aujourd'hui < ou = le jour recherché dans config
+if [[ "$NOWJour" -le "$ladateJour" ]]; then # si aujourd'hui < ou = le jour recherché dans config
 		resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
 
 		if [ "$resultprochain" = "0" ]; then
@@ -300,26 +311,24 @@ if [ "$NOWJour" -le "$ladateJour" ]; then # si aujourd'hui < ou = le jour recher
 			echo "Ok" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
 		fi
 
-if [ "$num" -ge "$lignetotalmoiencours" ]; then
+fi
+
+if [ "$num" -ge "$lignetotalprochain" ]; then
 return
 fi
 
-
-fi
 done
 
 }
 
 atrier() {
-ligne=`grep '# ### '  $chemin/config.sh | sed -n $num\p |  sed -e "s/# ### //g"`
-echo "$ligne-------------"
+ligne=`grep '#---# '  $chemin/config.sh | sed -n $num\p |  sed -e "s/#---# //g" | sed -e "s/#//g"`
 leNOM=`echo $ligne | cut -c12-`
 ladateJour=`echo $ligne | cut -c1-2`
 ladateMois=`echo $ligne | cut -c4-5`
 ladateAnnee=`echo $ligne | cut -c7-10`
 ladate="$ladateMois/$ladateJour/$ladateAnnee"
 
-echo "$NOWMois  == $ladateMois"
 if [[ "$NOWMois"  == "$ladateMois" ]]; then # si le moi en cours correspond au mois recherché dans config
 
 local arbre=`echo "$ladateAnnee - $date2" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"` # Résultat par soustraction des 2 dates afin d'avoir son age
