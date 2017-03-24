@@ -14,7 +14,6 @@ For multi-language plugin:
 (10/03/17 ---- modification pour une meilleur facilité d'utilisation du fichier "config.sh ----"
 (23/02/17 Préparaion pour fonctionner avc un PIR)
 (01/02/17 Pour savoir quel jour correspond une date précide dire c'est quel jour le 31 aoùt 1974 ?)
-(11/01/17 CA BUG... EN CORS DE TRAITEMENT... Annonce 1 fois par jour, à l'ouverture de Jarvis un évènement qui va se passer d'ici X prochains jours)
 (03/01/17 correction ce compatibilité avec Jarvis UI)
 (24/12/2016: unicode UFT8 Ok...)
 (20/12/2016: Anonnce le prochain evenement...)
