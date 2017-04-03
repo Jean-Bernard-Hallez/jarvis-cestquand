@@ -83,7 +83,7 @@ combiendetempscestpour
 }
 
 cestpourquand() {
-
+lignenumero=""
 chemin=${PWD}"/plugins/jarvis-cestquand"
 btotal=`echo $b | grep " " | wc -w`
 bb=`echo "$b" | cut -d' ' -f$(( $btotal - 1 ))-`
