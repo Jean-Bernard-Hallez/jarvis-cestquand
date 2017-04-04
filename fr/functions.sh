@@ -78,8 +78,6 @@ return
 fi
 combiendetempsdate
 combiendetempscestpour
-
-	
 }
 
 cestpourquand() {
@@ -154,20 +152,19 @@ testlemois
 
 #	say "C'est le $cestjour $ladate1"
 
-	if [[ "$cestpassemois" -le "$cestmois" ]]; then
+	if [ "$cestpassemois" -le "$cestmois" ]; then
 
 		if [[ "$arbre" == 0 ]]; then
 		say  "c'est passé il y a $etcest jours"
 		fi
-
-	        if [[ "$cestpasslejour" -le "$cestpassejour" ]]; then
+	        if [ "$cestpasslejour" -le "$cestpassejour" ]; then
 		# mettre ici si passé ou si ca va arriver !!
                 # c"est passé jour date est plus petit que maintenant
 		say "$nomann a déja fêté ses $arbre ans il y a $etcest jours"
 		fi
 
-		if [[ "$cestpasslejour" -gt "$cestpassejour" ]]; then
-                # ce n'est pas passé jour date est plus grand que maintenant
+		if [ "$cestpasslejour" -gt "$cestpassejour" ]; then
+               # ce n'est pas passé jour date est plus grand que maintenant
 		local etcestp=`echo $etcest | sed "s/-//g"`
 		say "$nomann fêtes ses $arbre ans dans $etcestp jours"
 		fi
