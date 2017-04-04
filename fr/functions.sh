@@ -152,27 +152,41 @@ testlemois
 
 #	say "C'est le $cestjour $ladate1"
 
-	if [ "$cestpassemois" -le "$cestmois" ]; then
+# ############## Je traite le mois en cours....
 
+		if [ "$cestpassemois" = "$cestmois" ]; then
 		if [[ "$arbre" == 0 ]]; then
 		say  "c'est passé il y a $etcest jours"
+		return
 		fi
 	        if [ "$cestpasslejour" -le "$cestpassejour" ]; then
-		# mettre ici si passé ou si ca va arriver !!
-                # c"est passé jour date est plus petit que maintenant
+# c"est passé jour date est plus petit que maintenant donc c'est passé il y a
 		say "$nomann a déja fêté ses $arbre ans il y a $etcest jours"
+		say "Sa date de naissance le $ladate1"
+		return
 		fi
 
 		if [ "$cestpasslejour" -gt "$cestpassejour" ]; then
-               # ce n'est pas passé jour date est plus grand que maintenant
+# ce n'est pas passé jour date est plus grand que maintenant donc ca va arriver ce mois ci
 		local etcestp=`echo $etcest | sed "s/-//g"`
 		say "$nomann fêtes ses $arbre ans dans $etcestp jours"
+		say "Sa date de naissance le $ladate1"
+
 		fi
 		return
 	fi
 
+# ############## Je traite les mois précedents....
+	if [ "$cestpassemois" -lt "$cestmois" ]; then
+		say "$nomann a déja fêté ses $arbre ans il y a $etcest jours"
+		say "Sa date de naissance le $ladate1"		
+		return
+	fi
+
+
 fi
 
+# ############## Je traite C'est aujourd'hui !!!
 	if [[ "$cestdans" == "0" ]]; then
 	say  "$b, c'est le $ladate1, c'est aujoud'hui !"
 	else
