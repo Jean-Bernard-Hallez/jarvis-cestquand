@@ -10,6 +10,7 @@ For multi-language plugin:
 - optionally write the Description / Usage sections in several languages
 -->
 ## Description
+(02/05/17 Correction suite modif du "plugins_installed")
 (04/04/17 corection d'un Bug merci @Ziouda)
 (24/03/17 Corection lors de la mise a jour du config avec #)
 (10/03/17 ---- modification pour une meilleur facilité d'utilisation du fichier "config.sh ----"

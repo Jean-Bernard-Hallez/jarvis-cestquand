@@ -82,7 +82,7 @@ combiendetempscestpour
 
 cestpourquand() {
 lignenumero=""
-chemin=${PWD}"/plugins/jarvis-cestquand"
+chemin=${PWD}"/plugins_installed/jarvis-cestquand"
 btotal=`echo $b | grep " " | wc -w`
 bb=`echo "$b" | cut -d' ' -f$(( $btotal - 1 ))-`
 bb=`jv_sanitize "$bb"`
@@ -198,7 +198,7 @@ fi
 
 
 jv_pg_ct_prochainevenement() {
-chemin=${PWD}"/plugins/jarvis-cestquand"
+chemin=${PWD}"/plugins_installed/jarvis-cestquand"
 NOW=$(date +"%m/%d/%Y")
 NOWJour=$(date +"%d")
 NOWMois=$(date +"%m")
@@ -246,17 +246,17 @@ if [ "$NOWJour" -le "$ladateJour" ]; then # si aujourd'hui < ou = le jour recher
 		if [ "$resultprochain" = "0" ]; then
 		ajourdhui="Ok"
 		say "C'est aujourd'hui et c'est $leNOM..."
-		echo "1" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+		echo "1" > $jv_dir/plugins_installed/jarvis-cestquand/riencemoici.txt
 		else
 			if [ "$arbre" = "0" ]; then
 			resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
 			say "le $ladatejourEntier $ladateJour $ladateMoisEntier $lenom dans $resultprochain jours et ç'est pour $leNOM."
-			echo "Ok" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+			echo "Ok" > $jv_dir/plugins_installed/jarvis-cestquand/riencemoici.txt
 			
 			else
 				resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
 				say "le $ladatejourEntier $ladateJour $ladateMoisEntier $lenom dans $resultprochain jours et ça sera les $arbre ans de $leNOM."
-				echo "Ok" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+				echo "Ok" > $jv_dir/plugins_installed/jarvis-cestquand/riencemoici.txt
 			fi
 			
 		fi
@@ -314,12 +314,12 @@ if [[ "$NOWJour" -le "$ladateJour" ]]; then # si aujourd'hui < ou = le jour rech
 		if [ "$resultprochain" = "0" ]; then
 		ajourdhui="Ok"
 		say "C'est aujourd'hui et c'est $leNOM..."
-		echo "1" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+		echo "1" > $jv_dir/plugins_installed/jarvis-cestquand/riencemoici.txt
 		else
 
 			resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
 			say "le $ladatejourEntier $ladateJour $ladateMoisEntier $lenom dans $etcest jours et ça sera les $arbre ans de $leNOM."
-			echo "Ok" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+			echo "Ok" > $jv_dir/plugins_installed/jarvis-cestquand/riencemoici.txt
 		fi
 
 fi
@@ -353,12 +353,12 @@ echo "$NOWJour -le $ladateJour"
 		nbrtour=`echo "$nbrtour + 1" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
 		ajourdhui="Ok"
 		say "C'est aujourd'hui et c'est $leNOM..."
-		echo "1" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+		echo "1" > $jv_dir/plugins_installed/jarvis-cestquand/riencemoici.txt
 		else
 		nbrtour=`echo "$nbrtour + 1" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
 		resultprochain=`echo "$ladateJour - $NOWJour" | bc -l | sed "s/\([0-9]*\.[0-9][0-9]\).*/\1/"`
 		say "le $ladate $lenom dans $resultprochain jours et ça sera les $arbre ans de $leNOM."
-		echo"Ok" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+		echo"Ok" > $jv_dir/plugins_installed/jarvis-cestquand/riencemoici.txt
 
 		fi
 
@@ -375,7 +375,7 @@ if [ "$NOWMois" -lt "$ladateMois" ]; then
 		adirej="Prochain évènement pas avant le $ladate1 pour $leNOM."
 	if [[ "$nbrtour" = "1" ]]; then	
 	say "il n'y a rien pour ce mois-ci... $adirej"	
-	echo"" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+	echo"" > $jv_dir/plugins_installed/jarvis-cestquand/riencemoici.txt
 	return
 	fi
 fi
@@ -385,13 +385,13 @@ fi
 
 if [[ "$nbrtour" == "0" ]]; then
 say "ha, il n'y a rien pour ce mois-ci... $adirej"
-echo"" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+echo"" > $jv_dir/plugins_installed/jarvis-cestquand/riencemoici.txt
 return
 fi
 
 if [[ "$adirej"  != " " ]] && [[ "$ajourdhui"  != "" ]]; then
 say "il n'y a rien pour ce mois-ci... $adirej"
-echo"" > $jv_dir/plugins/jarvis-cestquand/riencemoici.txt
+echo"" > $jv_dir/plugins_installed/jarvis-cestquand/riencemoici.txt
 fi
 
 	
@@ -533,7 +533,7 @@ return
 }
 
 jv_pg_ct_pourpluginpiresclave() {
-renvoiepir=`cat $jv_dir/plugins/jarvis-cestquand/riencemoici.txt`
+renvoiepir=`cat $jv_dir/plugins_installed/jarvis-cestquand/riencemoici.txt`
 say "$renvoiepir"
 }
 
