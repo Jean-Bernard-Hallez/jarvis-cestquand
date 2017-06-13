@@ -59,7 +59,6 @@ ladate1=$(date -d "$cestpassemois/$maman1/$maman3" +%A)
 
 if [[ "$cestpassemois" != "" ]]; then
 
-
 say "le $maman1 $cestpassemoisd $maman3 c'est un $ladate1 "
 fi
 
@@ -212,7 +211,11 @@ lignetotalprochain=`grep '#---# '   $chemin/config.sh | sed -e "s/#//g" | grep -
 
 # Je vérifie si il y aura des anniversaire ce moi ci:
 if [ "$lignetotalmoiencours" = "0" ]; then
+
+if [[ "$prochainevenementmuet" != "1" ]]; then
 say "il n'y a rien pour ce mois-ci... "
+fi
+
 cestpourquandprochainmoi
 return
 fi
@@ -265,7 +268,8 @@ fi
 
 if [ "$num" -ge "$lignetotalmoiencours" ]; then
 	if [ "$resultprochain" = "" ]; then
-	say "il n'y a rien pour ce mois-ci... "
+		if [[ "$prochainevenementmuet" != "1" ]]; then	say "il n'y a rien pour ce mois-ci... "
+		fi
 	num=""
 	cestpourquandprochainmoi
 	# return
@@ -283,7 +287,9 @@ done
 cestpourquandprochainmoi() {
 # Je vérifie si il y aura des anniversaire le moi prochain:
 if [ "$lignetotalprochain" = "0" ]; then
+if [[ "$prochainevenementmuet" != "1" ]]; then
 say "il n'y a rien pour le mois prochain désolé... "
+fi
 # Voir quand le prochain evènement !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 return
 fi
