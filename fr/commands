@@ -1,5 +1,7 @@
 *PROCHAIN*EVENEMENT*|*PROCHAIN*ANNIVERSAIRE*==jv_pg_ct_prochainevenement
-*EST QUAND*==jv_pg_ct_combiendetemps
-*JOUR*LE (*)==maman=`echo (1)` && jv_pg_ct_lejourdelasemainecest
+AVERTIRSILENCEEVENEMENT==prochainevenementmuet="1"; jv_pg_ct_prochainevenement; prochainevenementmuet=""; 
+
+*EST QUAN[^ ] (*)==jv_pg_ct_combiendetemps || jv_continue
+*EST*JOUR*LE (*)==maman=`echo (1)` && jv_pg_ct_lejourdelasemainecest
 POURPLUGINPIRESCLAVE==jv_pg_ct_pourpluginpiresclave
-                      
+            
